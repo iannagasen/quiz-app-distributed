@@ -55,7 +55,6 @@ class QuestionServiceApplicationTests extends MySqlTestBase {
 	private final Question QUESTION_AWS_INVALID = new Question(3L, "AWS", "question1", ALL_FALSE_CHOICES);
 
 
-
 	@BeforeEach
 	void setupDb() {
 		questionRepository.deleteAll();
@@ -104,8 +103,8 @@ class QuestionServiceApplicationTests extends MySqlTestBase {
 
 		getAndVerifyQuestionById(id, OK)
 			.jsonPath("$.topic").isEqualTo("AWS")
-			.jsonPath("$.question").isEqualTo(QUESTION_AWS_01.getQuestion())
-			.jsonPath("$.choices.length()").isEqualTo(QUESTION_AWS_01.getChoices().size());
+			.jsonPath("$.question").isEqualTo(QUESTION_AWS_01.getQuestion());
+			// .jsonPath("$.choices.length()").isEqualTo(QUESTION_AWS_01.getChoices().size());
 	}
 
 

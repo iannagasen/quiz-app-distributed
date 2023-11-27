@@ -1,0 +1,32 @@
+version: '2.1'
+
+services:
+
+  question:
+    build: src/backend/microservices/question-service
+    mem_limit: 512m
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+    ports:
+      - 8080:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  mysql:
+    image: mysql:8.0.32
+    mem_limit: 512m
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_DATABASE: question-db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pwd
+    healthcheck:
+      test: "/usr/bin/mysql --user=user --password=pwd --execute \"SHOW DATABASES;\""
+      interval: 5s
+      timeout: 2s
+      retries: 60
+    volumes:
+      - ./dump-scripts:/docker-entrypoint-initdb.d

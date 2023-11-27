@@ -34,6 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
     List<QuestionEntity> questions = questionRepository.findAllByTopic(topic);
 
     return questionMapper.entityListToApiList(questions);
+
   }
 
   
