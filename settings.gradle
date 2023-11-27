@@ -1,0 +1,5 @@
+include ':src:backend:api'
+include ':src:backend:util'
+include ':src:backend:microservices:analytics-service'
+include ':src:backend:microservices:question-service'
+include ':src:backend:microservices:quiz-service'
