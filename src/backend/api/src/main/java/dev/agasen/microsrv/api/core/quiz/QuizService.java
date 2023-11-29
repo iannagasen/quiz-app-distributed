@@ -10,6 +10,9 @@ public interface QuizService {
   @PostMapping("/quiz")
   Quiz submitQuiz(@RequestBody QuizAnswerList answers);
 
+  /*
+   * GET /quiz/{quizId}
+   */
   @GetMapping("/quiz/{quizId}")
   Quiz getQuizResult(@PathVariable Long quizId);
   

@@ -21,10 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class QuestionServiceImpl implements QuestionService {
 
-  private final QuestionRepository questionRepository;
   private final QuestionMapper questionMapper;
-
-
+  private final QuestionRepository questionRepository;
+  
+  
   @Override
   @Transactional
   public List<Question> getQuestions(String topic) {
@@ -67,6 +67,18 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionEntity savedEntity = questionRepository.save(entity);
 
     return questionMapper.entityToApi(savedEntity);
+  }
+
+
+  @Override
+  @Transactional
+  public List<Question> getQuestions(List<Long> questionIds) {
+
+    log.info("QuestionServiceImpl::getQuestions with multiple ids");
+
+    List<QuestionEntity> entities = questionRepository.findByIdIn(questionIds);
+
+    return questionMapper.entityListToApiList(entities);
   }
 
 }

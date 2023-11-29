@@ -1,6 +1,8 @@
-package dev.agasen.microsrv.api.core.quiz;
+package dev.agasen.microsrv.api.manager;
 
+import dev.agasen.microsrv.api.core.question.Question;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,10 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuizItem {
-
+@Builder
+public class QuizCompositeItem {
+ 
   private Long id;
-  private Long questionId;
+  private Question question;
   private Long selectedChoiceId;
-
 }

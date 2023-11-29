@@ -11,4 +11,6 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity, Long> 
   
   List<QuestionEntity> findAllByTopic(String topic);
 
+  List<QuestionEntity> findByIdIn(List<Long> ids);
+
 }

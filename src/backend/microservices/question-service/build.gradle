@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.agasen.microsrv.core'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
@@ -45,7 +45,7 @@ dependencies {
 
 dependencies {
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
-	testImplementation 'junit:junit:4.13.1'
+	// testImplementation 'junit:junit:4.13.1'
 
     /*
         this example uses lombok directly over the annotationProcessor,

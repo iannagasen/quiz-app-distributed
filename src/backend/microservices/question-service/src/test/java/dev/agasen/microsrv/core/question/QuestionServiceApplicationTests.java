@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 	properties={
 		"logging.level.org.hibernate.SQL=TRACE",
 		"logging.level.org.hibernate.type=trace",
+		"spring.jpa.hibernate.ddl-auto=update",
 	}
 )
 class QuestionServiceApplicationTests extends MySqlTestBase {

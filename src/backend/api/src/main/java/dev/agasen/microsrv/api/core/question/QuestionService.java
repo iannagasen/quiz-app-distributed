@@ -19,4 +19,9 @@ public interface QuestionService {
   @PostMapping("/question")
   Question createQuestion(@RequestBody Question question);
   
+  /**
+   * GET /questions/{questionIds}"
+   */
+  @GetMapping("/questions/{questionIds}")
+  List<Question> getQuestions(@PathVariable List<Long> questionIds);
 }

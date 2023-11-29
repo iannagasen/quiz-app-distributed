@@ -1,4 +1,11 @@
 
+CREATE DATABASE IF NOT EXISTS `question-db`;
+
+-- CREATE USER 'root'@'localhost' IDENTIFIED BY 'local';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'%';
+
+USE `question-db`;
 
 CREATE TABLE IF NOT EXISTS questions (
   id          INTEGER PRIMARY KEY AUTO_INCREMENT,

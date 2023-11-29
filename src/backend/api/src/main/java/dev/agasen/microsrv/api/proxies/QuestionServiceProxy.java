@@ -20,5 +20,8 @@ public interface QuestionServiceProxy {
 
   @PostExchange("/question")
   Question createQuestion(@RequestBody Question question);
-  
+
+  @GetExchange("/questions/{questionIds}")
+  List<Question> getQuestionsByMultipleIds(@PathVariable("questionIds") String questionIds);
+
 }

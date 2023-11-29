@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.agasen.microsrv.api.core.question.Question;
-import dev.agasen.microsrv.api.core.quiz.Quiz;
 import dev.agasen.microsrv.api.core.quiz.QuizAnswerList;
 
 public interface QuizManagerService {
@@ -23,29 +22,18 @@ public interface QuizManagerService {
    *  3. generate event for saving analytics
    */
   @PostMapping("/manager/quiz")
-  Quiz submitQuiz(@RequestBody QuizAnswerList submittedQuiz);
+  QuizComposite submitQuiz(@RequestBody QuizAnswerList submittedQuiz);
 
 
-  /**
-   * WORKFLOW:
-   *  1. Create the logic for generating a quiz 
-   *  2. Call the question service
-   */
   @GetMapping("/manager/quiz")
   List<Question> generateQuiz (
-      @RequestParam Long totalItems,
-      @RequestParam Optional<String> topic
+    @RequestParam Long totalItems,
+    @RequestParam Optional<String> topic
   );
 
 
-  /**
-   * WORKFLOW
-   *  1. Get the Quiz from quiz-service
-   *  2. Get each Questions from Quiz and aggregate
-   *  3. Get the analytics, async from 2
-   */
   @GetMapping("/manager/quiz/{quizId}")
-  Quiz getQuizResult(@PathVariable Long quizId);
+  QuizComposite getQuizResult(@PathVariable long quizId);
 
 
 }
