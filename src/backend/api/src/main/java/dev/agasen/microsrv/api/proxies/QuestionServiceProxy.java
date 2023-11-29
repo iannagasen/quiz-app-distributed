@@ -1,22 +1,24 @@
-package dev.agasen.microsrv.api.core.question;
+package dev.agasen.microsrv.api.proxies;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.PostExchange;
 
-public interface QuestionService {
+import dev.agasen.microsrv.api.core.question.Question;
 
-  @GetMapping("/question")
+public interface QuestionServiceProxy {
+
+  @GetExchange("/question")
   List<Question> getQuestions(@RequestParam(name="topic",required=true) String topic);
 
-  @GetMapping("/question/{questionId}")
+  @GetExchange("/question/{questionId}")
   Question getQuestion(@PathVariable("questionId") Long questionId);
 
-  @PostMapping("/question")
+  @PostExchange("/question")
   Question createQuestion(@RequestBody Question question);
   
 }

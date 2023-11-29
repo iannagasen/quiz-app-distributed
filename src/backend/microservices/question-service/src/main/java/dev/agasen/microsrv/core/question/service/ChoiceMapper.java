@@ -12,7 +12,7 @@ public interface ChoiceMapper {
   @Mapping(target="question", ignore=true)
   @Mapping(target="version", ignore=true)
   ChoiceEntity apiToEntity(Choice api);
-
+  
   Choice entityToApi(ChoiceEntity entity);
 
 }

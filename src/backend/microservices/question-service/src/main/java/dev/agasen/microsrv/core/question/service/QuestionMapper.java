@@ -14,11 +14,9 @@ import dev.agasen.microsrv.core.question.persistence.QuestionEntity;
 )
 public interface QuestionMapper {
   
-  @Mapping(target="choices", source="choices")
   Question entityToApi(QuestionEntity entity);
   
   @Mapping(target="version", ignore=true)
-  @Mapping(target="choices", source="choices")
   QuestionEntity apiToEntity(Question api);
 
   List<Question> entityListToApiList(List<QuestionEntity> entity);

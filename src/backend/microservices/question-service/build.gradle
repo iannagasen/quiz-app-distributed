@@ -1,14 +1,15 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.0'
+	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'dev.agasen.microsrv.core.question'
-version = '1.0.0-SNAPSHOT'
+group = 'dev.agasen.microsrv.core'
+version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
+
 }
 
 configurations {
@@ -19,42 +20,20 @@ configurations {
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 }
-
 
 dependencies {
   implementation project(':src:backend:api') 
   implementation project(':src:backend:util')
 }
 
-
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	// implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-	// testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
 ext {
-    mapstructVersion = "1.5.3.Final"
+		mapstructVersion = "1.6.0.Beta1"
+    lombokVersion = "1.18.30"
+    lombokMapstructBindingVersion = "0.2.0"
 }
 
-dependencies {
-  implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-  compileOnly "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-  annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-  testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-}
 
 dependencies {
   implementation platform('org.testcontainers:testcontainers-bom:1.17.6')
@@ -63,6 +42,32 @@ dependencies {
   testImplementation 'org.testcontainers:mysql'
 }
 
-jar {
-    enabled = false
+
+dependencies {
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}"
+	testImplementation 'junit:junit:4.13.1'
+
+    /*
+        this example uses lombok directly over the annotationProcessor,
+        the io.freefair.lombok plugin works as well.
+        The freefair-lombok plugin is used in the example mapstruct-on-gradle-testcp-with-lombok
+     */
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}", "org.projectlombok:lombok:${lombokVersion}", "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
+
+}
+
+tasks.named('bootBuildImage') {
+	builder = 'paketobuildpacks/builder-jammy-base:latest'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
 }

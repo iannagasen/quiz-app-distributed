@@ -8,6 +8,27 @@
       "mainClass": "dev.agasen.microsrv.core.question.QuestionServiceApplication",
       "projectName": "question-service",
       "args": "",
+      "envFile": "${workspaceFolder}/.env",
+      "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=41269 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=question-service"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-QuizServiceApplication<quiz-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "dev.agasen.microsrv.core.quiz.QuizServiceApplication",
+      "projectName": "quiz-service",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-QuizManagerServiceApplication<quiz-manager-service>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "dev.agasen.microsrv.manager.quiz.QuizManagerServiceApplication",
+      "projectName": "quiz-manager-service",
+      "args": "",
       "envFile": "${workspaceFolder}/.env"
     }
   ]
