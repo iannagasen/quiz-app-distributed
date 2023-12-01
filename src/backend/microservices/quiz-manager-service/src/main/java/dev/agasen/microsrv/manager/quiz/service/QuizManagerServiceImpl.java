@@ -5,12 +5,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.agasen.microsrv.api.core.question.Question;
 import dev.agasen.microsrv.api.core.quiz.Quiz;
 import dev.agasen.microsrv.api.core.quiz.QuizAnswerList;
 import dev.agasen.microsrv.api.core.quiz.QuizItem;
+import dev.agasen.microsrv.api.event.Event;
+import dev.agasen.microsrv.api.event.Event.Type;
 import dev.agasen.microsrv.api.manager.QuizComposite;
 import dev.agasen.microsrv.api.manager.QuizCompositeItem;
 import dev.agasen.microsrv.api.manager.QuizManagerService;
@@ -18,6 +21,8 @@ import dev.agasen.microsrv.api.proxies.QuestionServiceProxy;
 import dev.agasen.microsrv.api.proxies.QuizServiceProxy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,11 +31,17 @@ public class QuizManagerServiceImpl implements QuizManagerService {
 
   private final QuestionServiceProxy questionServiceProxy;
   private final QuizServiceProxy quizServiceProxy;
+  private final KafkaTemplate<Long, Event<Long, Question>> kafkaTemplate;
+  private final Scheduler publishEventScheduler;
+
+
 
   @Override
   public QuizComposite submitQuiz(QuizAnswerList submittedQuiz) {
     throw new UnsupportedOperationException("Unimplemented method 'submitQuiz'");
   }
+
+
 
   @Override
   public List<Question> generateQuiz(Long totalItems, Optional<String> topic) {
@@ -42,6 +53,8 @@ public class QuizManagerServiceImpl implements QuizManagerService {
     log.info("QuizManagerServiceImpl::generateQuiz");
     return questionServiceProxy.getQuestions(topic.get());
   }
+
+
 
   @Override
   public QuizComposite getQuizResult(long quizId) {
@@ -78,5 +91,18 @@ public class QuizManagerServiceImpl implements QuizManagerService {
         .build();
   }
 
-  
+
+
+  @Override
+  public Mono<Void> createQuestion(Question question) {
+    /**
+     * Push an event to create a question
+     */
+
+    log.info("QuizManagerServiceImpl::createQuestion");
+
+    var event = new Event<>(Type.CREATE, question.getId(), question);
+
+    return Mono.fromFuture(kafkaTemplate.send("question-topic", question.getId(), event)).then();
+  }
 }

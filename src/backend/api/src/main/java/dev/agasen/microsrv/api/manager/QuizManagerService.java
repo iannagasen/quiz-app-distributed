@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dev.agasen.microsrv.api.core.question.Question;
 import dev.agasen.microsrv.api.core.quiz.QuizAnswerList;
+import reactor.core.publisher.Mono;
 
 public interface QuizManagerService {
 
@@ -34,6 +35,10 @@ public interface QuizManagerService {
 
   @GetMapping("/manager/quiz/{quizId}")
   QuizComposite getQuizResult(@PathVariable long quizId);
+
+
+  @PostMapping("/manager/quiz/question")
+  Mono<Void> createQuestion(@RequestBody Question question);
 
 
 }

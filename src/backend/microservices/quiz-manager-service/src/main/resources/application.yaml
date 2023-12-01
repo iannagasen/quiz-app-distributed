@@ -1,0 +1,28 @@
+
+# spring.kafka.properties:
+#   sasl.mechanism: PLAIN
+#   bootstrap.servers: localhost:9092
+
+# spring.kafka.producer:
+#   bootstrap-servers: localhost:9092
+#   key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#   value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#   buffer-memory: 33554432
+#   retries: 0
+
+
+
+app:
+  kafka:
+    question-topic: question
+  scheduler:
+    threadPoolSize: 10
+    taskQueueSize: 100
+
+
+springdoc:
+  swagger-ui.path: /openapi/swagger-ui.html
+  api-docs.path: /openapi/v3/api-docs
+  packagesToScan: dev.agasen.microsrv
+  pathsToMatch: /**
+  cache.disabled: true
