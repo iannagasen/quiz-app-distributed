@@ -24,6 +24,12 @@ logging.level:
   org.hibernate.SQL: DEBUG 
 
 
+
+
+# spring.json.trusted.packages: "dev.agasen.microsrv.api.event.Event"
+spring.kafka.producer.properties:
+  spring.json.add.type.headers: false
+
 ---
 spring.config.activate.on-profile: docker
 

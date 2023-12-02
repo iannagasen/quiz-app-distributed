@@ -20,15 +20,13 @@ public class KafkaProducerConfig {
 
   @Bean
   public ProducerFactory<Long, Event<Long, Question>> producerFactory() {
-
+    var config = Map.<String, Object>of(
+      ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094",
+      ProducerConfig.RETRIES_CONFIG, 0,
+      ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432
+    );
     return new DefaultKafkaProducerFactory<>(
-       Map.of(
-          ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094",
-          ProducerConfig.RETRIES_CONFIG, 0,
-          ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432,
-          ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class,
-          ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class
-      )
+       config, new LongSerializer(), new JsonSerializer<Event<Long, Question>>()
     );
   }
 
@@ -36,7 +34,7 @@ public class KafkaProducerConfig {
   
   @Bean
   public KafkaTemplate<Long, Event<Long, Question>> kafkaTemplate(
-    ProducerFactory<Long, Event<Long, Question>> producerFactory
+      ProducerFactory<Long, Event<Long, Question>> producerFactory
   ) {
 
     return new KafkaTemplate<>(producerFactory);

@@ -67,6 +67,7 @@ public class QuestionServiceImpl implements QuestionService {
     QuestionEntity savedEntity = questionRepository.save(entity);
 
     return questionMapper.entityToApi(savedEntity);
+    // return question;
   }
 
 

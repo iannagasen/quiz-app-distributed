@@ -5,9 +5,15 @@ import java.time.ZonedDateTime;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
+@AllArgsConstructor
+@EqualsAndHashCode
 public class Event<K, T> {
   
   public enum Type {
