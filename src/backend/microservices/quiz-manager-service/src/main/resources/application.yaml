@@ -13,6 +13,7 @@
 
 spring.application.name: quiz-manager
 
+server.port: 7000
 
 app:
   kafka:
@@ -41,3 +42,7 @@ eureka:
   instance:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
+
+# see https://springdoc.org/index.html#how-can-i-deployspringdoc-openapi-ui-behind-a-reverse-proxy.
+# this is added since a reverse proxy / edge server is used
+server.forward-headers-strategy: framework
