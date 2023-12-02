@@ -1,5 +1,6 @@
 package dev.agasen.microsrv.manager.quiz.config;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,6 +18,7 @@ public class ClientConfig {
   // When converting to Service Discovery, dont forget to Load Balance the WebClient
 
   @Bean
+  @LoadBalanced // netflix client load balancing
   public WebClient.Builder webClient() {
     return WebClient.builder();
   }
@@ -24,7 +26,8 @@ public class ClientConfig {
   @Bean
   public QuestionServiceProxy questionServiceProxy() {
     WebClient webClient = webClient()
-        .baseUrl("http://localhost:7001") 
+        .baseUrl("http://question") // netflix eureka
+        // .baseUrl("http://localhost:7001") 
         .build();
 
     return HttpServiceProxyFactory
@@ -36,7 +39,8 @@ public class ClientConfig {
   @Bean
   public QuizServiceProxy quizServiceProxy() {
     WebClient webClient = webClient()
-        .baseUrl("http://localhost:7002")
+        .baseUrl("http://quiz") // netflix eureka
+        // .baseUrl("http://localhost:7002")
         .build();
 
     return HttpServiceProxyFactory

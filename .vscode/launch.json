@@ -30,6 +30,16 @@
       "projectName": "quiz-manager-service",
       "args": "",
       "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "type": "java",
+      "name": "Spring Boot-EurekaServerApplication<discovery-server>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "dev.agasen.microsrv.cloud.discovery.EurekaServerApplication",
+      "projectName": "discovery-server",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
     }
   ]
 }

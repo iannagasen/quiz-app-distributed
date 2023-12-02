@@ -11,6 +11,8 @@
 #   retries: 0
 
 
+spring.application.name: quiz-manager
+
 
 app:
   kafka:
@@ -26,3 +28,16 @@ springdoc:
   packagesToScan: dev.agasen.microsrv
   pathsToMatch: /**
   cache.disabled: true
+
+
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5

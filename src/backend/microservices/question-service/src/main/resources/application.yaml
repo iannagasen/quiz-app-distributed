@@ -24,6 +24,17 @@ logging.level:
   org.hibernate.SQL: DEBUG 
 
 
+app.eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${app.eureka-server}:8761/eureka/
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
 
 
 # spring.json.trusted.packages: "dev.agasen.microsrv.api.event.Event"
