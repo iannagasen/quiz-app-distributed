@@ -2,6 +2,12 @@
 server:
   port: 8761
 
+
+app:
+  eureka-username: u
+  eureka-password: p
+
+
 # from: https://github.com/spring-cloud-samples/eureka/blob/master/src/main/resources/application.yml
 # eureka configs is divided into 3 category: instance, client, server
 eureka:

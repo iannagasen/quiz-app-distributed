@@ -21,3 +21,42 @@ Edge Server: 8080
   - http://localhost:8080/question?topic=AWS
   - http://localhost:8080/openapi/webjars/swagger-ui/index.html
   - http://localhost:8080/eureka/web
+
+### Create a Self Signed Certificate
+```bash
+keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore edge.p12 -validity 3650
+```
+password
+
+this will generate a edge.p12 file
+transfer the file to the gateway, since gateway will be the only server using https
+ - src/main/resources
+create a folder named `keystore` under it and paste the edge.p12, this will be the path
+ - src/main/resources/keystore/edge.p12
+
+This means that the certificate file will be placed in the .jar file when it is built and will be available on the classpath at runtime at keystore/edge.p12.
+
+NOTE:
+**Providing certificates using the classpath is sufficient during development, but not applicable to other environments, for example, a production environment.**
+
+Configure the edge server to use the certificate and HTTPS:
+
+```yaml
+# this was changed from 8080 to 8443 to indicate that we are using https not http
+server.port: 8443 
+server.ssl:
+  key-store-type: PKCS12 
+  key-store: classpath:keystore/edge.p12 
+  key-store-password: password 
+  key-alias: localhost
+```
+
+#### Replacing a self-signed certificate at runtime
+- use certificates signed by authorized by **CA** (Certificate Authorities)
+
+```bash
+# apply where the docker compose is located
+mkdir keystore
+# use testtest as password
+keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore keystore/edge-test.p12 -validity 3650
+```
