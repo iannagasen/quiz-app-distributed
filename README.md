@@ -22,6 +22,10 @@ Edge Server: 8080
   - http://localhost:8080/openapi/webjars/swagger-ui/index.html
   - http://localhost:8080/eureka/web
 
+Auth Server: 9999
+  - http://localhost:9999/.well-known/openid-configuration?continue
+
+
 ### Create a Self Signed Certificate
 ```bash
 keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore edge.p12 -validity 3650
@@ -60,3 +64,57 @@ mkdir keystore
 # use testtest as password
 keytool -genkeypair -alias localhost -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore keystore/edge-test.p12 -validity 3650
 ```
+
+#### Configuring Resource Servers
+
+ACTING AS RESOURCE SERVERS:
+  - quiz-composite service
+  - edge server
+
+Required dependencies to support OAuth2.0 resource servers
+
+```groovy
+implementation 'org.springframework.boot:spring-boot-starter-security' 
+implementation 'org.springframework.security:spring-security-oauth2resource-server' 
+implementation 'org.springframework.security:spring-security-oauth2-jose'
+```
+
+config:
+
+```java
+@Configuration
+@EnableWebFluxSecurity // support for API based on Spring WebFlux
+public class SecurityConfig {
+
+  @Bean
+  SecurityWebFilterChain springSecurityFilterChain( ServerHttpSecurity http) {
+    http
+    .authorizeExchange() 
+      // allow unrestricted access to URLS that shound be unprotected
+      // actuator should be protected in a production environment
+      .pathMatchers("/actuator/**").permitAll()
+      // below ensures that the user is authenticated before allowed acces to all other URLS
+      .anyExchange().authenticated() 
+      .and()
+    // specifies that the authorization will be based on OAuth 2.0 access tokens encoded as JWTs
+    .oauth2ResourceServer() 
+      .jwt();
+    return http.build(); 
+  } 
+}
+```
+
+add also this to app config
+
+```yaml
+# this should be change on dockerized environments
+app.auth-server: localhost
+
+spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.authserver}:9999
+```
+
+#### Acquiring access tokens using the client credentials grant flow
+```bash
+curl -k https://writer:secret-writer@localhost:8443/oauth2/token -d grant_type=client_credentials -d scope="quiz:read quiz:write" -s | jq .
+```
+![Alt text](docs/screenshots/README/image.png)
