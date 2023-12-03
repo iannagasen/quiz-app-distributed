@@ -3,9 +3,11 @@ server.port: 8080
 
 spring.application.name: gateway
 
-app.eureka-server: localhost
-app.eureka-username: u
-app.eureka-password: p
+app:
+  eureka-username: u
+  eureka-password: p
+  eureka-server: localhost
+  auth-server: localhost
 
 eureka:
   client:
@@ -17,6 +19,7 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
+spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.authserver}:9999
 
 spring.cloud.gateway.routes:
   - id: quiz-manager
