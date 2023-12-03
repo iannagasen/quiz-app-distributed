@@ -19,7 +19,7 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
-spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.authserver}:9999
+spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.auth-server}:9999
 
 spring.cloud.gateway.routes:
   - id: quiz-manager
