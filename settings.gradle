@@ -1,8 +1,11 @@
 include ':src:backend:api'
 include ':src:backend:util'
+
 include ':src:backend:microservices:analytics-service'
 include ':src:backend:microservices:question-service'
 include ':src:backend:microservices:quiz-service'
 include ':src:backend:microservices:quiz-manager-service'
+
 include ':src:backend:spring-cloud:discovery-server'
 include ':src:backend:spring-cloud:edge-server'
+include ':src:backend:spring-cloud:auth-server'
