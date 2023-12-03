@@ -23,8 +23,18 @@ public class SecurityConfig {
      *    on OAuth 2.0 access tokens encoded as JWTs
      */
     http
+      // TODO - make this csrf enable, also do for other configs
+      .csrf(c -> c.disable())
       .authorizeExchange(c -> c
         .pathMatchers("/actuator/**").permitAll()
+        .pathMatchers("/headerrouting/**").permitAll()
+        .pathMatchers("/actuator/**").permitAll()
+        .pathMatchers("/eureka/**").permitAll()
+        .pathMatchers("/oauth2/**").permitAll()
+        .pathMatchers("/login/**").permitAll()
+        .pathMatchers("/error/**").permitAll()
+        .pathMatchers("/openapi/**").permitAll()
+        .pathMatchers("/webjars/**").permitAll()
         .anyExchange().authenticated()
       )
       .oauth2ResourceServer(c -> c.jwt(Customizer.withDefaults()));

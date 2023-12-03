@@ -48,7 +48,7 @@ spring.cloud.gateway.routes:
     predicates:
     - Path=/error/**
 
-  - id: product-composite-swagger-ui
+  - id: quiz-manager-swagger-ui
     uri: lb://quiz-manager
     predicates:
     - Path=/openapi/** 
