@@ -44,10 +44,10 @@ public class SecurityConfig {
   
   private static final Logger LOG = LoggerFactory.getLogger(SecurityConfig.class);
 
-  @Bean
+ @Bean
   @Order(1)
   public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
-    OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
     http
       .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
@@ -68,7 +68,7 @@ public class SecurityConfig {
     return http.build();
   }
 
-
+  
   @Bean
   @Order(2)
   public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -149,7 +149,11 @@ public class SecurityConfig {
   @Bean
   public AuthorizationServerSettings authorizationServerSettings() {
     return AuthorizationServerSettings.builder()
-      // .issuer("http://auth-server:9999")
+      // should be http://auth-server:9999 when using docker
+      // parameterized this
+      // value of the issuer must match resource server config of
+      //    spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.auth-server}:9999
+      .issuer("http://localhost:9999")
       .build();
   }
 

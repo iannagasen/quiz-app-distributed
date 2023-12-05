@@ -14,6 +14,7 @@
 spring.application.name: quiz-manager
 
 server.port: 7000
+server.error.include-message: always
 
 
 springdoc:
@@ -46,6 +47,7 @@ app:
   auth-server: localhost
 
 
+# value of issuer-uri should match the AuthenticationServerSettings::issuer, see Bean Config in the Auth Server
 spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.auth-server}:9999
 
 
@@ -62,3 +64,9 @@ eureka:
 # see https://springdoc.org/index.html#how-can-i-deployspringdoc-openapi-ui-behind-a-reverse-proxy.
 # this is added since a reverse proxy / edge server is used
 server.forward-headers-strategy: framework
+
+logging:
+  level:
+    root: INFO
+    dev.agasen: DEBUG
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
