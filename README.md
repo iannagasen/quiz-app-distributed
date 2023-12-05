@@ -118,3 +118,83 @@ spring.security.oauth2.resourceserver.jwt.issuer-uri: http://${app.authserver}:9
 curl -k https://writer:secret-writer@localhost:8443/oauth2/token -d grant_type=client_credentials -d scope="quiz:read quiz:write" -s | jq .
 ```
 ![Alt text](docs/screenshots/README/image.png)
+
+
+https://localhost:8443/oauth2/authorize?response_type=code&client_id=reader&redirect_uri=https://my.redirect.uri&scope=quiz:read&state=35725
+
+Next, get the authorization code in the URL
+
+![Alt text](docs/screenshots/README/image-1.png)
+
+and use the ff command:
+  -k here means --insecure, allow transfer of data over HTTPS without verifying the SSL certificate
+  -d for POST request, specify the data you want to send to the server
+  -s silent mode
+
+  
+
+```sh
+curl -k https://reader:secret-reader@localhost:8443/oauth2/token \
+  -d grant_type=authorization_code \
+  -d client_id=reader \
+  -d redirect_uri=https://my.redirect.uri \
+  -d code=j1yow5HmsQFTUqcn0az0Enp1CvG8rmzTxBIzqrk135DM5M17QeQdER3fnJRKoiTa53VvtDfaOW5YughoUI8rXljxuDCNhqjdpInz1XY_bDPXpPqk2j6wmpQd7mv_wzqb -s | jq .
+```
+
+Sample Output
+![Alt text](docs/screenshots/README/image-2.png)
+
+note here that there were no scope `quiz:write`, since we actually just get consent for quiz:read scope
+
+to get a quiz:write consent use this
+
+`https://localhost:8443/oauth2/authorize?response_type=code&client_id=writer&redirect_uri=https://my.redirect.uri&scope=quiz:read+quiz:write&state=72489`
+
+and exchange the code for the token
+
+```sh
+curl -k https://writer:secret-writer@localhost:8443/oauth2/token \
+  -d grant_type=authorization_code \
+  -d client_id=writer \
+  -d redirect_uri=https://my.redirect.uri \
+  -d code=tVY_XlTSja0Blt-WEX_2TL3L_4tF5-zpH0Ko8wCMadloajtYwzgaqwcCMBsR5CPEuovou87qzGjFJanKkEeMWQeHHfxS-Ow67D6e9a22ZfAAxjJMfymaMCBpWzmrsJ6m | jq .
+```
+
+Output:
+
+![Alt text](docs/screenshots/README/image-3.png)
+
+Next, call a resource server using the accesst tokens
+NOTE: An OAuth 2.0 access token is expected to be sent as a standard HTTP authorization header, where the access token is prefixed with Bearer.
+```sh
+ACCESS_TOKEN=an-invalid-token
+curl https://localhost:8443/manager/quiz/1 -k -H "Authorization: Bearer eyJraWQiOiI3MzE1OTc3ZC04ZDcyLTRjMjYtYjIyMy0wZGZmMjNiOGE2OWMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1IiwiYXVkIjoicmVhZGVyIiwibmJmIjoxNzAxNzk2MTAyLCJzY29wZSI6WyJxdWl6OnJlYWQiXSwiaXNzIjoiaHR0cDovL2F1dGgtc2VydmVyOjk5OTkiLCJleHAiOjE3MDE3OTk3MDIsImlhdCI6MTcwMTc5NjEwMiwianRpIjoiZWIzMzBmZTgtZjc3MS00ZGNiLWEzMTAtMDYyNmM2ODI3MDM1In0.XRtdd02TYTnXK5oGCmReM55i6hKAwEKoL8xDxZl9AH55HWwYqXNunF8hLS-pIUaPjhfVul_DEk-wBpq4Hd9VKYp6tI2EbIst_Squ-9gH-PoeAFvr5GjKrwJTXIGqhMMlpzg23CLtfkxEb102E2nOGYU3JdVHvzBGus5JjXG96t_PGcVyaiLMj-NqVWlLAN6beb520Ecoy3eZ31Rn10j1Ilt8mJXjLb7q31aQEXG_w93ZjvU-P1hoF9y0kMgpZCr2TaEKnTIqFYrxU0WfIwkZjFKc_Tx38oT6_iSY43f8YphjuIoIsUnYIwiOtI5rWXA73MdKGd2mIYGq1RSLhQACrw" -i
+
+curl https://localhost:8443/manager/quiz/1 -k -H "Authorization: Bearer $ACCESS_TOKEN" -i
+```
+SAMPLE OUTPUT:
+![Alt text](docs/screenshots/README/image-4.png)
+
+
+![Alt text](docs/screenshots/README/image-5.png)
+```sh
+ACCESS_TOKEN=
+```
+
+Flow:
+  1. call authorize endpoint to get the code 
+```http
+/authorize
+  ?response_type=code
+  &client_id=$REGISTERED_CLIENT_ID
+  &redirect_uri=$WHERE_THE_SERVER_WILL_SEND_THE_CODE
+  &scope=$WHAT_SCOPEGRANT_YOU_NEED
+  &state=$RANDOM_TO_VALIDATE_THAT_IT_IS_YOURS
+
+```
+  2. you will be redirected in the redirect_uri, with the following query params: code, state. The code is the authorization code.
+  3. exchange the authorization code for the access token
+```sh
+curl -k https://$CLIENT_ID:$CLIENT_SECRET@$AUTH_SERVER/oauth2/token \
+  -d
+```
