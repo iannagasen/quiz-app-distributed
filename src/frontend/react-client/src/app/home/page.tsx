@@ -1,12 +1,13 @@
 import React from 'react'
 import { Container } from './Container';
 
-const QUESTIONS_API_URL = 'http://localhost:7001';
+const QUESTIONS_API_URL = 'https://localhost:8443';
 
 const getData = async ():Promise<Question[]> => {
   const res = await fetch(`${QUESTIONS_API_URL}/question?topic=AWS`, {
     next: { revalidate: 0 }
   })
+  console.log(res.json())
   return res.json();
 }
 
