@@ -1,0 +1,37 @@
+<div class='flex min-h-screen items-stretch'>
+  <div class='basis-1/4 m-2'>
+    navBar
+  </div>
+  <div class='basis-1/2 m-2'>
+    <div class="flex flex-col p-2 m-2">
+      <!--HEADER-->
+      <div class="flex justify-between mb-4">
+        <div class='flex-grow text-4xl font-extrabold orange_gradient'>
+          Topic
+        </div>
+        <div class='flex-shrink text-2xl font-extrabold'>
+          {{topic}}
+        </div>
+      </div>
+      <!--HEADER-->
+
+      <!--QUESTION MANAGER-->
+      <div>
+        <div *ngFor="let question of quiz?.questions">
+          <div class='bg-clr-secondary rounded-md border-none text-white m-3 p-3 mb-4'>
+            <label for="question"></label>
+            <textarea 
+              name="question" 
+              id="question" 
+              [rows]="getRows(question.question)"
+              class="block w-full resize-none align-bottom outline-none border-0 border-b-2 bg-inherit text-lg font-semibold focus:border-blue-400 focus:ring-0"
+            >{{question.question}}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='basis-1/4 m-2'>
+    statBar
+  </div>
+</div>

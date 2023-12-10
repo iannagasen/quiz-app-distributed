@@ -1,0 +1,111 @@
+{
+  "id": 1,
+  "questions": [
+    {
+      "id": 1,
+      "topic": "AWS",
+      "question": "What does S3 stand for in AWS?",
+      "choices": [
+        {
+          "id": 2,
+          "value": "Secure Storage Service",
+          "explanation": "S3 stands for Secure Storage Service",
+          "correct": false
+        },
+        {
+          "id": 3,
+          "value": "System Storage Service",
+          "explanation": "S3 stands for System Storage Service",
+          "correct": false
+        },
+        {
+          "id": 1,
+          "value": "Simple Storage Service",
+          "explanation": "S3 stands for Simple Storage Service",
+          "correct": true
+        }
+      ],
+      "selectedChoiceId": 1
+    },
+    {
+      "id": 2,
+      "topic": "AWS",
+      "question": "What service is used for computing power in AWS?",
+      "choices": [
+        {
+          "id": 4,
+          "value": "EC2",
+          "explanation": "EC2 provides computing power in AWS",
+          "correct": true
+        },
+        {
+          "id": 5,
+          "value": "S3",
+          "explanation": "S3 provides computing power in AWS",
+          "correct": false
+        },
+        {
+          "id": 6,
+          "value": "RDS",
+          "explanation": "RDS provides computing power in AWS",
+          "correct": false
+        }
+      ],
+      "selectedChoiceId": 2
+    },
+    {
+      "id": 3,
+      "topic": "AWS",
+      "question": "What service can be used to automatically scale resources based on traffic in AWS?",
+      "choices": [
+        {
+          "id": 8,
+          "value": "Auto Scaling",
+          "explanation": "Auto Scaling scales resources based on traffic",
+          "correct": true
+        },
+        {
+          "id": 9,
+          "value": "AWS Lambda",
+          "explanation": "AWS Lambda scales resources based on traffic",
+          "correct": false
+        },
+        {
+          "id": 7,
+          "value": "Elastic Load Balancing",
+          "explanation": "ELB scales resources based on traffic",
+          "correct": true
+        }
+      ],
+      "selectedChoiceId": 3
+    },
+    {
+      "id": 4,
+      "topic": "AWS",
+      "question": "What is the AWS service for managing databases?",
+      "choices": [
+        {
+          "id": 11,
+          "value": "DynamoDB",
+          "explanation": "DynamoDB is the AWS service for managing databases",
+          "correct": false
+        },
+        {
+          "id": 12,
+          "value": "S3",
+          "explanation": "S3 is the AWS service for managing databases",
+          "correct": false
+        },
+        {
+          "id": 10,
+          "value": "RDS",
+          "explanation": "RDS is the AWS service for managing databases",
+          "correct": true
+        }
+      ],
+      "selectedChoiceId": 4
+    }
+  ],
+  "dateTaken": null,
+  "timeTaken": null
+}
