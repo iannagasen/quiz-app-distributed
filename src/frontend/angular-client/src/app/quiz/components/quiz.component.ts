@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { QuizService } from '../service/quiz.service';
 import { Quiz } from '../types/quiz';
 import { CommonModule } from '@angular/common';
+import { QuestionDTO } from '../types/question.dto';
+import { QuestionState } from '../types/question.state';
 
 @Component({
   selector: 'app-quiz',
@@ -9,11 +11,13 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule
   ],
-  templateUrl: './quiz.component.html',
+  templateUrl: './quiz.component.html', 
 })
 export class QuizComponent implements OnInit {
 
-  quiz: Quiz | undefined = undefined;
+
+  questionsState: QuestionState[] = []
+
   topic: string = 'AWS'
 
   constructor(
@@ -21,7 +25,7 @@ export class QuizComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.quiz = this.quizService.getQuiz(0);
+    this.questionsState = this.quizService.generateQuiz('AWS');
   }
 
   getRows(text: string): number {
@@ -31,4 +35,20 @@ export class QuizComponent implements OnInit {
     if (length <= 180) return 2;
     return 3;
   }
+
+
+  isSelected(questionId: number, choiceId: number) {
+    const id = this.questionsState.find(q => q.id === questionId)?.selectedChoiceId
+    return id === choiceId;
+  }
+  
+
+  selectAnswer(questionId: number, choiceId: number): void {
+    const question = this.questionsState.find(q => q.id === questionId);
+
+    if (question) {
+      question.selectedChoiceId = choiceId;
+    }
+  }
+
 }

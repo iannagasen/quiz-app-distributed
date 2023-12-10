@@ -5,5 +5,4 @@ export interface Question {
   topic: string;
   question: string;
   choices: Choice[];
-  selectedChoiceId: number;
 }
