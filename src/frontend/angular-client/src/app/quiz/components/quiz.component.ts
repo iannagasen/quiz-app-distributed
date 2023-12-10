@@ -27,7 +27,7 @@ export class QuizComponent implements OnInit {
   getRows(text: string): number {
     const length = text.length
     console.log(`length is = ${length}`)
-    if (length <= 80) return 1;
+    if (length <= 90) return 1;
     if (length <= 180) return 2;
     return 3;
   }
