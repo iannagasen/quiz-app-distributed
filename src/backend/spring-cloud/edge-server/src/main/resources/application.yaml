@@ -54,7 +54,7 @@ spring.cloud.gateway.routes:
     - Path=/openapi/** 
 
   - id: question-get
-    uri: lb://question
+    uri: lb://quiz-manager
     predicates:
     - Path=/question/**
     - Method=GET

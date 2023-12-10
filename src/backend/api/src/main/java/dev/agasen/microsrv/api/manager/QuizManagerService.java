@@ -40,5 +40,10 @@ public interface QuizManagerService {
   @PostMapping("/manager/quiz/question")
   Mono<Void> createQuestion(@RequestBody Question question);
 
+  
+  @GetMapping("/question")
+  List<Question> getQuestions(@RequestParam(name="topic",required=true) String topic);
+  
+
 
 }

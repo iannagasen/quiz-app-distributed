@@ -105,4 +105,12 @@ public class QuizManagerServiceImpl implements QuizManagerService {
 
     return Mono.fromFuture(kafkaTemplate.send("question-topic", question.getId(), event)).then();
   }
+
+
+
+  @Override
+  public List<Question> getQuestions(String topic) {
+    log.info("QuizManagerServiceImpl::getQuestions");
+    return questionServiceProxy.getQuestions(topic);
+  }
 }
