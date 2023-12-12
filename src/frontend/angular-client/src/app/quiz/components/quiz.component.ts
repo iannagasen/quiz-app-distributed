@@ -1,23 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizService } from '../service/quiz.service';
-import { Quiz } from '../types/quiz';
 import { CommonModule } from '@angular/common';
-import { QuestionDTO } from '../types/question.dto';
-import { QuestionState } from '../types/question.state';
-import { FormsModule, NgForm } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, NgForm, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-quiz',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   templateUrl: './quiz.component.html', 
 })
 export class QuizComponent implements OnInit {
 
-  questionsState: QuestionState[] = []
   isSubmitted = false;
   topic: string = 'AWS'
   scoreSummary: {
@@ -26,13 +22,38 @@ export class QuizComponent implements OnInit {
     total: number
   } | undefined = undefined;
 
+
+  quizForm!: FormGroup;
+
+
   constructor(
     private quizService: QuizService,
+    private formBuilder: FormBuilder,
   ) { }
 
-
   ngOnInit(): void {
-    this.questionsState = this.quizService.generateQuiz('AWS');
+    const questionsState = this.quizService.generateQuiz('AWS');
+
+    const questionsFormGroup = questionsState.map(question => (
+      this.formBuilder.group({
+        question: new FormControl(question.question),
+        selectedChoiceId: '',
+        choices: this.formBuilder.array(
+          question.choices.map(choice => (
+            this.formBuilder.group({
+              id: choice.id,
+              value: choice.value,
+              explanation: choice.explanation,
+            })
+          ))
+        )
+      })
+    ))
+
+    // initialize form using the reactive approach
+    this.quizForm = this.formBuilder.group({
+      questions: this.formBuilder.array(questionsFormGroup)
+    })
   }
 
 
@@ -53,16 +74,31 @@ export class QuizComponent implements OnInit {
     // console.log(form)
     this.isSubmitted = true
 
-    this.scoreSummary = this.questionsState.reduce(
-      (result, question) => {
-        const selectedChoice = question.choices.find(c => c.id === question.selectedChoiceId);
+    // this.scoreSummary = this.questionsState.reduce(
+    //   (result, question) => {
+    //     const selectedChoice = question.choices.find(c => c.id === question.selectedChoiceId);
 
-        if (selectedChoice?.correct) result.score ++;
-        if (!selectedChoice) result.unanswered ++;
+    //     if (selectedChoice?.correct) result.score ++;
+    //     if (!selectedChoice) result.unanswered ++;
 
-        return result;
-      },
-      { score: 0, unanswered: 0, total: this.questionsState.length}
-    )
+    //     return result;
+    //   },
+    //   { score: 0, unanswered: 0, total: this.questionsState.length}
+    // )
   }
+
+  onSubmitReactive() {
+    console.log(this.quizForm)
+  }
+
+  getQuestionControls() {
+    return (this.quizForm.get('questions') as FormArray).controls
+  }
+
+  getChoiceControlsFromQuestion(questionGroup: AbstractControl<any>) {
+    // console.log(questionGroup)
+    return (questionGroup.get('choices') as FormArray).controls
+  }
+
+
 }
