@@ -58,7 +58,7 @@
         "id": 8,
         "value": "Auto Scaling",
         "explanation": "Auto Scaling scales resources based on traffic",
-        "correct": true
+        "correct": false
       },
       {
         "id": 9,
