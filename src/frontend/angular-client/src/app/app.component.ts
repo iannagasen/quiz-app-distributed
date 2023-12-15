@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { QuizComponent } from './quiz/components/quiz.component';
+import { QuizManagerComponent } from './quiz/components/quiz-manager.component';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { QuizComponent } from './quiz/components/quiz.component';
   imports: [
     CommonModule, 
     RouterOutlet,
-    QuizComponent,
+    QuizManagerComponent
   ],
   templateUrl: './app.component.html',
 })

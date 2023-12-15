@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as quizJson from '../../../../../../../payloads/quiz.json'
 import questionJson from '../../../../../../../payloads/questions.json';
-import { Quiz } from '../types/quiz';
 import { QuestionDTO } from '../types/question.dto';
+import { Quiz } from '../types/core';
 
 @Injectable({
   providedIn: 'root'
