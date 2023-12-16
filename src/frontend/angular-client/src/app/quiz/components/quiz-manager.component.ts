@@ -7,6 +7,9 @@ import { QuizFormComponent } from './quiz-form.component';
 import { QuestionDTO } from '../types/question.dto';
 import { QuizResult, ScoreSummary } from '../types/core';
 
+import { Observable, interval, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+
 @Component({
   selector: 'app-quiz-manager',
   standalone: true,
@@ -19,7 +22,7 @@ import { QuizResult, ScoreSummary } from '../types/core';
   template: `
 
     <div class="flex flex-col p-2 m-2">
-      <app-quiz-manager-header class="justify-between" topic="AWS" />
+      <app-quiz-manager-header class="justify-between" [topic]="topic" />
       <app-quiz-form 
           [questions]="_questions" 
           (submitHandler)="handleSubmit($event)"
@@ -43,14 +46,15 @@ export class QuizManagerComponent implements OnInit {
   _questions!: QuestionDTO[];
   _scoreSummary!: ScoreSummary;
 
+  topicSubscription?: Subscription;
+
   constructor(
     private quizService: QuizService,
   ) { }
-
+  
   ngOnInit(): void {
     this._questions = this.quizService.generateQuiz('AWS');
   }
-
 
   handleSubmit(quizResult: QuizResult) {
     this.willShowResult = true
@@ -58,7 +62,6 @@ export class QuizManagerComponent implements OnInit {
   }
 
   handleRetake() {
-    // this is to refresh the page?
     this._questions = this._questions;
   }
 

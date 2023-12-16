@@ -59,7 +59,6 @@ import { QuestionResult, QuizResult } from '../types/core';
           {{!state.isSubmitted ? 'Submit' : 'Retake'}}
         </button>
       </form>
-  
   `
 })
 export class QuizFormComponent implements OnInit {
@@ -174,11 +173,9 @@ export class QuizFormComponent implements OnInit {
     return (this.quizForm.get('questions') as FormArray).controls
   }
 
-
   getChoiceControlsFromQuestion(questionGroup: AbstractControl<any>) {
     return (questionGroup.get('choices') as FormArray).controls
   }
-
 
   getRows(text: string): number {
     const length = text.length

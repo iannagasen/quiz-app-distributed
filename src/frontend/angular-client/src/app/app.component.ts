@@ -9,10 +9,9 @@ import { QuizManagerComponent } from './quiz/components/quiz-manager.component';
   imports: [
     CommonModule, 
     RouterOutlet,
-    QuizManagerComponent
   ],
-  templateUrl: './app.component.html',
+  template: `
+    <router-outlet></router-outlet>
+  `,
 })
-export class AppComponent {
-  title = 'angular-client';
-}
+export class AppComponent { }
