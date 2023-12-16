@@ -1,6 +1,7 @@
 package dev.agasen.microsrv.cloud.auth;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -31,6 +32,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
 
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -38,7 +40,9 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
 import dev.agasen.microsrv.cloud.auth.jose.Jwks;
+import jakarta.servlet.http.HttpServletRequest;
 @Configuration
+
 @EnableWebSecurity
 public class SecurityConfig {
   
@@ -47,7 +51,8 @@ public class SecurityConfig {
  @Bean
   @Order(1)
   public SecurityFilterChain authServerSecurityFilterChain(HttpSecurity http) throws Exception {
-OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+  
+    OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
 
     http
       .getConfigurer(OAuth2AuthorizationServerConfigurer.class)
@@ -77,11 +82,13 @@ OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         .requestMatchers("/actuator/**").permitAll()
         .anyRequest().authenticated()
       )
+      // .cors(cors -> cors
+      //   .configurationSource(this::angularClientCorsConfigSource)
+      // )
       .formLogin(Customizer.withDefaults());
 
     return http.build();
   }
-
 
   @Bean
   public UserDetailsService users() {
@@ -106,7 +113,7 @@ OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
       .redirectUri("https://my.redirect.uri")
       // this is configured in the gateway
       .redirectUri("https://localhost:8443/openapi/webjars/swagger-ui/oauth2-redirect.html")
-      .redirectUri("http://localhost:4200/dashboard")
+      .redirectUri("http://localhost:4200")
       .scope(OidcScopes.OPENID)
       .scope("quiz:read")
       .scope("quiz:write")
@@ -158,5 +165,8 @@ OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
       .issuer("http://localhost:9999")
       .build();
   }
+
+
+
 
 }

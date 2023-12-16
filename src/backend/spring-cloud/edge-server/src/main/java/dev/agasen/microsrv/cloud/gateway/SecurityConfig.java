@@ -1,11 +1,15 @@
 package dev.agasen.microsrv.cloud.gateway;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.server.ServerWebExchange;
 
 @Configuration
 @EnableWebFluxSecurity // Support Reactive-base endpoints
@@ -37,9 +41,26 @@ public class SecurityConfig {
         .pathMatchers("/webjars/**").permitAll()
         .anyExchange().authenticated()
       )
+      .cors(cors -> cors
+        .configurationSource(this::angularClientCorsConfigSource)
+      )
       .oauth2ResourceServer(c -> c.jwt(Customizer.withDefaults()));
 
     return http.build();
+  }
+
+  private CorsConfiguration angularClientCorsConfigSource(ServerWebExchange request) {
+    /**
+     * TODO: test if this will work 
+     *    when setAllowCredentials set to false and 
+     *    when set Allowed Origin will only be localhost:4200 - Angular Client
+     */
+    var angularClient = new CorsConfiguration();
+    angularClient.setAllowCredentials(false);
+    angularClient.setAllowedOrigins(List.of("*"));
+    angularClient.setAllowedMethods(List.of("*"));
+    angularClient.setAllowedHeaders(List.of("*"));
+    return angularClient;
   }
 
 }
