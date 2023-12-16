@@ -81,7 +81,7 @@ input {
 }
 
 body {
-  @apply bg-gradient-to-br from-clr via-clr-background to-blue-800 text-white;
+  @apply bg-clr-background text-white;
 }
 
 @layer utilities {

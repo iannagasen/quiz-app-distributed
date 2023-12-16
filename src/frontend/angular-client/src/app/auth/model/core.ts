@@ -1,11 +1,14 @@
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../service/authentication.service';
+
 export interface AuthenticationRequest {
   email: string
   password: string 
 }
 
 export interface AuthenticationResponse {
-  timestamp: string;
-  message: string;
-  status: string;
-  data: any
+  [ACCESS_TOKEN]: string,
+  [REFRESH_TOKEN]: string,
+  scope: string,
+  token_type: string,
+  expires_in: number
 }

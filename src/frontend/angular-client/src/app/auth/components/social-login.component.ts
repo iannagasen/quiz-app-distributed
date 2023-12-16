@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { AuthenticationService } from '../service/authentication.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-social-login',
@@ -15,13 +17,13 @@ import { environment } from '../../../environments/environment';
         <div class="space-y-4">
           <button
             class="w-full bg-red-500 text-white font-semibold py-3 rounded-md shadow-md transition duration-300 hover:bg-red-600 focus:outline-none focus:bg-red-600"
-            (click)="loginWithGoogle()"
+            (click)="redirectToGoogleLogin()"
           >
             Google
           </button>
           <button
             class="w-full bg-blue-500 text-white font-semibold py-3 rounded-md shadow-md transition duration-300 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-            (click)="loginWithMyBackend()"
+            (click)="redirectToCustomAuthenticatorLogin()"
           >
             Custom Authenticator
           </button>
@@ -33,19 +35,43 @@ import { environment } from '../../../environments/environment';
     </div>
   `
 })
-export class SocialLoginComponent {
+export class SocialLoginComponent implements OnInit {
+  public isLoggedIn = false;
 
 
-  loginWithMyBackend() {
-    window.location.href = 
-      `${environment.backendApi}/oauth2/authorize?response_type=code` +
-      `&client_id=${environment.clientId}` +
-      `&scope=${environment.scope}` +
-      `&redirect_uri=${environment.redirectUri}` +
-      `&state=123`
+  constructor(
+    private _authService: AuthenticationService,
+    private _router: Router,
+    private _activatedRoute: ActivatedRoute
+  ) { }
+
+
+  ngOnInit() {
+    this.isLoggedIn = this._authService.isLoggedIn();
+
+    if (this.isLoggedIn) {
+      console.log("logged in")
+      this._router.navigate(["/dashboard"]);
+    } else {
+      this._activatedRoute.queryParams.subscribe((params) => {
+        if (params?.['code']) {
+          this._authService.retrieveToken(params['code']);
+        }
+        
+        // TODO: maybe extract this if, and chain it reactive style
+        if (this._authService.isLoggedIn()) {
+          this._router.navigate(["/dashboard"]);
+        }
+      })
+    }
   }
 
-  loginWithGoogle() {
 
+  redirectToCustomAuthenticatorLogin() {
+    this._authService.redirectToCustomAuthenticatorLogin();
+  }
+
+  redirectToGoogleLogin() {
+    // unimplemented
   }
 }
