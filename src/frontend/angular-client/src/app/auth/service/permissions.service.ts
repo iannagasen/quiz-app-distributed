@@ -12,7 +12,6 @@ export class PermissionsService {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-
     if (localStorage.getItem('token') === null || localStorage.getItem('token') === '') {
       return false;
     } else {

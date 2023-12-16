@@ -1,4 +1,16 @@
 
+## TODO:
+FRONTEND
+  - select choice workflow
+BACKEND
+  - create schema for:
+    - generate quiz:
+    - get quiz:
+
+rename dashboard to home
+
+
+
 ## November 27, 2023
   - Create the package structure:
     - src

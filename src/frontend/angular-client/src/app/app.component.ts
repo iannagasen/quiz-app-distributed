@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { QuizManagerComponent } from './quiz/components/quiz-manager.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -14,4 +15,6 @@ import { QuizManagerComponent } from './quiz/components/quiz-manager.component';
     <router-outlet></router-outlet>
   `,
 })
-export class AppComponent { }
+export class AppComponent { 
+
+}

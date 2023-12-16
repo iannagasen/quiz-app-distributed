@@ -138,7 +138,7 @@ curl -k https://reader:secret-reader@localhost:8443/oauth2/token \
   -d grant_type=authorization_code \
   -d client_id=reader \
   -d redirect_uri=https://my.redirect.uri \
-  -d code=j1yow5HmsQFTUqcn0az0Enp1CvG8rmzTxBIzqrk135DM5M17QeQdER3fnJRKoiTa53VvtDfaOW5YughoUI8rXljxuDCNhqjdpInz1XY_bDPXpPqk2j6wmpQd7mv_wzqb -s | jq .
+  -d code=AGS6LV-O0zxpqDUyNhT5KHsby3WdzZ3JN6Ktw--6A8kSoO3t3E7-pBF9bK1yVrSqBI3fp5p6NF_L2llM3c51g6DFcYIlo1XbnkUD_zKdGkIpBRng5m2wj3mTbGWDUVrj -s | jq .
 ```
 
 Sample Output
@@ -171,6 +171,7 @@ ACCESS_TOKEN=an-invalid-token
 curl https://localhost:8443/manager/quiz/1 -k -H "Authorization: Bearer eyJraWQiOiI3MzE1OTc3ZC04ZDcyLTRjMjYtYjIyMy0wZGZmMjNiOGE2OWMiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1IiwiYXVkIjoicmVhZGVyIiwibmJmIjoxNzAxNzk2MTAyLCJzY29wZSI6WyJxdWl6OnJlYWQiXSwiaXNzIjoiaHR0cDovL2F1dGgtc2VydmVyOjk5OTkiLCJleHAiOjE3MDE3OTk3MDIsImlhdCI6MTcwMTc5NjEwMiwianRpIjoiZWIzMzBmZTgtZjc3MS00ZGNiLWEzMTAtMDYyNmM2ODI3MDM1In0.XRtdd02TYTnXK5oGCmReM55i6hKAwEKoL8xDxZl9AH55HWwYqXNunF8hLS-pIUaPjhfVul_DEk-wBpq4Hd9VKYp6tI2EbIst_Squ-9gH-PoeAFvr5GjKrwJTXIGqhMMlpzg23CLtfkxEb102E2nOGYU3JdVHvzBGus5JjXG96t_PGcVyaiLMj-NqVWlLAN6beb520Ecoy3eZ31Rn10j1Ilt8mJXjLb7q31aQEXG_w93ZjvU-P1hoF9y0kMgpZCr2TaEKnTIqFYrxU0WfIwkZjFKc_Tx38oT6_iSY43f8YphjuIoIsUnYIwiOtI5rWXA73MdKGd2mIYGq1RSLhQACrw" -i
 
 curl https://localhost:8443/manager/quiz/1 -k -H "Authorization: Bearer $ACCESS_TOKEN" -i
+curl https://localhost:8443/question?topic=AWS -k -H "Authorization: Bearer $ACCESS_TOKEN" -i
 ```
 SAMPLE OUTPUT:
 ![Alt text](docs/screenshots/README/image-4.png)

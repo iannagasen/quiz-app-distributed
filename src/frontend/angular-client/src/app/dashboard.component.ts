@@ -24,5 +24,5 @@ import { QuizManagerComponent } from './quiz/components/quiz-manager.component';
   `,
 })
 export class DashboardComponent {
-
+  
 }

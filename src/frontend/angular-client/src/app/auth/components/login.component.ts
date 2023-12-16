@@ -68,6 +68,10 @@ export class LoginComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // this.login()
+  }
+
+  login() {
     window.location.href = 
         `${environment.backendApi}/oauth2/authorize?response_type=code` +
         `&client_id=${environment.clientId}` +
