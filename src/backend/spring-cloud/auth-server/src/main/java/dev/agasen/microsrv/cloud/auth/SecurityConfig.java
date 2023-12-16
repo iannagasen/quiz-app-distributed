@@ -106,6 +106,7 @@ OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
       .redirectUri("https://my.redirect.uri")
       // this is configured in the gateway
       .redirectUri("https://localhost:8443/openapi/webjars/swagger-ui/oauth2-redirect.html")
+      .redirectUri("http://localhost:4200")
       .scope(OidcScopes.OPENID)
       .scope("quiz:read")
       .scope("quiz:write")
@@ -122,6 +123,7 @@ OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
       .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
       .redirectUri("https://my.redirect.uri")
       .redirectUri("https://localhost:8443/openapi/webjars/swagger-ui/oauth2-redirect.html")
+      .redirectUri("http://localhost:4200")
       .scope(OidcScopes.OPENID)
       .scope("quiz:read")
       .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
