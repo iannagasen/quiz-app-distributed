@@ -129,6 +129,8 @@ export class QuizFormComponent implements OnInit {
     this.quizForm = this.formBuilder.group({
       questions: this.formBuilder.array(questionsFormGroup)
     })
+
+    console.log("QuizFORM", this.quizForm)
   }
 
 

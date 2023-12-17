@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { QuizService } from '../service/quiz.service';
 import { CommonModule } from '@angular/common';
 import { QuizResultBannerComponent } from './quiz-result-banner.component';
@@ -8,7 +8,7 @@ import { QuestionDTO } from '../types/question.dto';
 import { QuizResult, ScoreSummary } from '../types/core';
 
 import { Observable, interval, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-quiz-manager',
@@ -20,15 +20,14 @@ import { take } from 'rxjs/operators';
     QuizFormComponent
   ],
   template: `
-
     <div class="flex flex-col p-2 m-2">
       <app-quiz-manager-header class="justify-between" [topic]="topic" />
       <app-quiz-form 
-          [questions]="_questions" 
+          *ngIf="questions.length !== 0"
+          [questions]="questions" 
           (submitHandler)="handleSubmit($event)"
           (retakeHandler)="handleRetake()"
       />
-      <!--END: QUESTION MANAGER-->
       <app-quiz-result-banner 
           [show]="willShowResult" 
           (buttonClicked)="this.willShowResult = false" 
@@ -43,17 +42,18 @@ export class QuizManagerComponent implements OnInit {
   willShowResult = false;
   topic: string = 'AWS'
 
-  _questions!: QuestionDTO[];
+  questions: QuestionDTO[] = [];
   _scoreSummary!: ScoreSummary;
 
   topicSubscription?: Subscription;
 
   constructor(
     private quizService: QuizService,
+    private _changeDetectorRef: ChangeDetectorRef
   ) { }
   
   ngOnInit(): void {
-    this._questions = this.quizService.generateQuiz('AWS');
+    this.initializeQuestions()
   }
 
   handleSubmit(quizResult: QuizResult) {
@@ -62,7 +62,25 @@ export class QuizManagerComponent implements OnInit {
   }
 
   handleRetake() {
-    this._questions = this._questions;
+    this.questions = this.questions;
+  }
+
+  private initializeQuestions() {
+    // TODO:  observables not detecting changes when data arrive
+    this.quizService.generateQuiz('AWS')
+      .pipe(
+        take(1)
+      )
+      .subscribe({
+        next: data => {
+          console.log("DATA")
+          console.log(data)
+          this.questions = data
+          console.log("QUESTIONS")
+          console.log(this.questions)
+        },
+        error: err => console.error("error fetching data", err)
+      })
   }
 
 }
