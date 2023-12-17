@@ -170,6 +170,7 @@ export class QuizFormComponent implements OnInit {
       score: scoreSummary
     });
   }
+  
 
   getQuestionControls() {
     return (this.quizForm.get('questions') as FormArray).controls

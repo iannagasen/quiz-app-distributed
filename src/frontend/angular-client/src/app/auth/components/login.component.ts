@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthenticationRequest, AuthenticationResponse } from '../model/core';
 import { AuthenticationService } from '../service/authentication.service';
 import { environment } from '../../../environments/environment';
+import { SidebarComponent } from '../../sidebar.component';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,10 @@ import { environment } from '../../../environments/environment';
   imports: [
     CommonModule,
     FormsModule,
+    SidebarComponent
   ],
   template: `
+    <app-sidebar></app-sidebar>
     <div class="min-h-screen flex items-center justify-center bg-clr-background">
       <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <h2 class="text-3xl font-semibold text-center mb-6 text-clr-background">Login</h2>
