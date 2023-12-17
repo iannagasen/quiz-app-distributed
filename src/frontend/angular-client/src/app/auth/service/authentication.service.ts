@@ -38,7 +38,9 @@ export class AuthenticationService {
 
     this._http.post(`${environment.backendApi}/oauth2/token`, params.toString(), { headers: headers })
       .subscribe({
-          next: (data) => this.saveToken(data as AuthenticationResponse),
+          next: (data) => {
+            this.saveToken(data as AuthenticationResponse);
+          },
           error: (err) => alert('Invalid Credentials')
       })
   }
@@ -52,16 +54,22 @@ export class AuthenticationService {
   
 
   isLoggedIn() {
-    return localStorage.getItem(ACCESS_TOKEN) !== null && localStorage.getItem(ACCESS_TOKEN) !== ''
+    if (typeof localStorage === 'undefined') return false;
+    
+    if (localStorage.getItem(ACCESS_TOKEN) === null || localStorage.getItem(ACCESS_TOKEN) === '') {
+      return false;
+    } else {
+      return true;
+    }
   }
   
 
   redirectToCustomAuthenticatorLogin() {
     window.location.href = 
-    `${environment.backendApi}/oauth2/authorize?response_type=code` +
-    `&client_id=${environment.clientId}` +
-    `&scope=${environment.scope}` +
-    `&redirect_uri=${environment.redirectUri}` +
-    `&state=123`
+      `${environment.backendApi}/oauth2/authorize?response_type=code` +
+      `&client_id=${environment.clientId}` +
+      `&scope=${environment.scope}` +
+      `&redirect_uri=${environment.redirectUri}` +
+      `&state=123`
   }
 }

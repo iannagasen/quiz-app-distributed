@@ -57,17 +57,18 @@ export class SocialLoginComponent implements OnInit {
         if (params?.['code']) {
           this._authService.retrieveToken(params['code']);
         }
-        
-        // TODO: maybe extract this if, and chain it reactive style
-        if (this._authService.isLoggedIn()) {
-          this._router.navigate(["/dashboard"]);
-        }
       })
+
+      // TODO: maybe extract this if, and chain it reactive style
+      if (this._authService.isLoggedIn()) {
+        this._router.navigate(["/dashboard"]);
+      }
     }
   }
 
 
   redirectToCustomAuthenticatorLogin() {
+    console.log("click custom login")
     this._authService.redirectToCustomAuthenticatorLogin();
   }
 
