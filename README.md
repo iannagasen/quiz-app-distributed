@@ -199,3 +199,10 @@ Flow:
 curl -k https://$CLIENT_ID:$CLIENT_SECRET@$AUTH_SERVER/oauth2/token \
   -d
 ```
+
+
+localhost:9200 
+  - elasticsearch info
+
+localhost:5600
+  - kibana dashboard
