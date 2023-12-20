@@ -48,6 +48,13 @@ spring.cloud.gateway.routes:
     predicates:
     - Path=/error/**
 
+  - id: config-server
+    uri: http://${app.config-server}:8888
+    predicates:
+    - Path=/config/*
+    filters:
+    - RewritePath=/config/(?<segment>.*), /$\{segment}
+
   - id: quiz-manager-swagger-ui
     uri: lb://quiz-manager
     predicates:
