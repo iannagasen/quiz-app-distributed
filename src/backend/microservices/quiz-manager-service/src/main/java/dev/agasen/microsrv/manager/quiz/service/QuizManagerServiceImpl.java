@@ -35,7 +35,6 @@ public class QuizManagerServiceImpl implements QuizManagerService {
   private final Scheduler publishEventScheduler;
 
 
-
   @Override
   public QuizComposite submitQuiz(QuizAnswerList submittedQuiz) {
     throw new UnsupportedOperationException("Unimplemented method 'submitQuiz'");

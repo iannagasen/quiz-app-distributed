@@ -70,3 +70,9 @@ logging:
     root: INFO
     dev.agasen: DEBUG
     org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
+  # TEMPORARY
+  file.name: \\wsl$\Ubuntu\root\elk-logs\elk-stack.log
+
+logstash:
+  host: localhost
+  port: 9600
