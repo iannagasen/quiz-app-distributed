@@ -67,15 +67,23 @@ services:
       - kafka-data:/bitnami/kafka
 
   elasticsearch:
-    image: elasticsearch:7.16.2
+    image: elasticsearch:8.9.0
     container_name: elasticsearch
-    restart: always
+    restart: no
     volumes:
       - elastic-data:/usr/share/elasticsearch/data
+    # command: >
+    #   bash -c "
+    #     elasticsearch -p /tmp/epid & /bin/bash /utils/wait-for-it.sh -t 0 localhost:9200 -- curl -XPUT 'http://127.0.0.1:9200/springboot-app-index' -d @index.json; 
+    #     kill $(cat /tmp/epid) && wait $(cat /tmp/epid); 
+    #     exit 0;
+    #   "
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       # single node cluster
       discovery.type: single-node
+      xpack.security.enabled: false
+      bootstrap.memory_lock: true
     ports:
       - 9200:9200
       - 9300:9300
@@ -83,30 +91,36 @@ services:
       - elk
 
   logstash:
-    image: logstash:7.16.2
+    image: logstash:8.9.0
     container_name: logstash
-    restart: always
+    restart: no
     volumes:
-      - ./logstash/:/logstash_dir
+      - ./elk/logstash/config/:/usr/share/logstash/config/
+      - ./elk/logstash/pipeline/:/usr/share/logstash/pipeline/
+    command: logstash -f /usr/share/logstash/pipeline/logstash.conf
     # when logstash is started, it should use the config file from logstash.conf
-    command: logstash -f /logstash_dir/logstash.conf
     depends_on:
       - elasticsearch
     ports:
       - 9600:9600
+      - 5044:5044
+      - 5000:5000/tcp
+      - 5000:500/udp
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTICSEARCH_URL: http://elasticsearch:9200
     networks:
       - elk
 
   kibana:
-    image: kibana:7.16.2
+    image: kibana:8.9.0
     container_name: kibana
-    restart: always
+    restart: no
     ports:
       - 5601:5601
     environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
     depends_on:
       - elasticsearch
     networks:
@@ -116,7 +130,9 @@ services:
 volumes:
   kafka-data:
     driver: local
-  elastic-data: {}
+  elastic-data:
+    driver: local
 
 networks:
   elk:
+    driver: bridge
