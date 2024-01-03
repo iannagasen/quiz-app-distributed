@@ -23,5 +23,10 @@ public interface QuestionService {
    * GET /questions/{questionIds}"
    */
   @GetMapping("/questions/{questionIds}")
-  List<Question> getQuestions(@PathVariable List<Long> questionIds);
+  List<Question> getQuestions(@PathVariable(name="questionIds") List<Long> questionIds);
+
+  @GetMapping("/question/answers/{questionIds}")
+  List<CorrectQuestionAnswer> getQuestionAnswers(@PathVariable(name="questionIds") List<Long> questionIds);
+
+  
 }

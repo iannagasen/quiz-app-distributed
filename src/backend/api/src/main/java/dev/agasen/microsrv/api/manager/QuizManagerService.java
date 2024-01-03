@@ -15,13 +15,6 @@ import reactor.core.publisher.Mono;
 
 public interface QuizManagerService {
 
-  /**
-   * WORKFLOW:
-   *  1. call the question service to check the answers
-   *  2. save the quiz result (quiz-service) 
-   *      - can we make this asynchronous to step 1)
-   *  3. generate event for saving analytics
-   */
   @PostMapping("/manager/quiz")
   QuizComposite submitQuiz(@RequestBody QuizAnswerList submittedQuiz);
 

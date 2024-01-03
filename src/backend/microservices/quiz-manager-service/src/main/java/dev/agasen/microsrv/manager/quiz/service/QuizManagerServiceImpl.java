@@ -35,8 +35,15 @@ public class QuizManagerServiceImpl implements QuizManagerService {
   private final Scheduler publishEventScheduler;
 
 
-  @Override
+  @Override 
   public QuizComposite submitQuiz(QuizAnswerList submittedQuiz) {
+    /**
+     * WORKFLOW:
+     *  1. call the question service to check the answers
+     *  2. save the quiz result (quiz-service) 
+     *      - can we make this asynchronous to step 1)
+     *  3. generate event for saving analytics
+     */
     throw new UnsupportedOperationException("Unimplemented method 'submitQuiz'");
   }
 

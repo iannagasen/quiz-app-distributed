@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.agasen.microsrv.api.core.question.Choice;
+import dev.agasen.microsrv.api.core.question.CorrectQuestionAnswer;
 import dev.agasen.microsrv.api.core.question.NoCorrectAnswerException;
 import dev.agasen.microsrv.api.core.question.Question;
 import dev.agasen.microsrv.api.core.question.QuestionService;
 import dev.agasen.microsrv.api.exceptions.NotFoundException;
+import dev.agasen.microsrv.core.question.persistence.ChoiceEntity;
 import dev.agasen.microsrv.core.question.persistence.QuestionEntity;
 import dev.agasen.microsrv.core.question.persistence.QuestionRepository;
 import jakarta.transaction.Transactional;
@@ -22,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class QuestionServiceImpl implements QuestionService {
 
   private final QuestionMapper questionMapper;
+  private final ChoiceMapper choiceMapper;
   private final QuestionRepository questionRepository;
   
   
@@ -82,4 +85,22 @@ public class QuestionServiceImpl implements QuestionService {
     return questionMapper.entityListToApiList(entities);
   }
 
+
+  @Override
+  @Transactional
+  public List<CorrectQuestionAnswer> getQuestionAnswers(List<Long> questionIds) {
+    log.info("QuestionServiceImpl::getQuestionAnswers");
+
+    return questionIds.stream()
+        .map(id -> {
+            var correctAnswer = questionRepository
+                .findById(id)
+                .flatMap(question -> question.getChoices().stream().filter(ChoiceEntity::isCorrect).findFirst())
+                .map(choiceMapper::entityToApi)
+                .orElse(null);
+            return new CorrectQuestionAnswer(id, correctAnswer);
+        })
+        .toList();  
+  }
+  
 }
